@@ -1,18 +1,13 @@
 package com.scienjus.smartqq.client;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ma.qqmsg.MyApplication;
 import com.scienjus.smartqq.callback.MessageCallback;
 import com.scienjus.smartqq.constant.ApiURL;
 import com.scienjus.smartqq.model.Discuss;
@@ -26,20 +21,19 @@ import com.scienjus.smartqq.model.UserInfo;
 
 import net.dongliu.requests.exception.RequestException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -63,6 +57,7 @@ public class QQClient {
     private String psessionid;
     //客户端id，固定的
     private static final long Client_ID = 53999199;
+    boolean isLogoutRequest = false;
 
     private QQClient(){
         okHttpClient = new OkHttpClient.Builder().cookieJar(new CookieJar() {
@@ -84,6 +79,7 @@ public class QQClient {
                         cookieAll.add(cookie);
                     }
                 }
+
                 for(okhttp3.Cookie cookie : cookies){
                     logE(cookie.name()+":"+cookie.value());
                     if (TextUtils.equals(cookie.name(), "qrsig")) {
@@ -612,7 +608,8 @@ public class QQClient {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                callback.fail();
+                if(callback != null)
+                callback.fail(-100, "");
             }
 
             @Override
@@ -630,8 +627,16 @@ public class QQClient {
                             callback.onDiscussMessage(new DiscussMessage(message.getJSONObject("value")));
                         }
                     }
+                }catch (RequestException e){
+                    String msg = e.getMessage();
+                    if(!TextUtils.isEmpty(msg) && msg.contains("[103]")){
+                        callback.fail(103, msg);
+                        return;
+                    }
+                    callback.fail(-100, "");
+                    e.printStackTrace();
                 } catch (Exception e) {
-                    callback.fail();
+                    callback.fail(-100, "");
                     e.printStackTrace();
                 }
             }
@@ -692,8 +697,56 @@ public class QQClient {
         return friendMap;
     }
 
-    public void logout(){
+    public void clear(){
         cookieAll = null;
+    }
+
+    public void logout(final Listener listener){
+        logD("退出");
+        cookieAll = null;
+        listener.success("");
+//        List<Cookie> needRemove = new ArrayList<>();
+//        for (Cookie cookieSave:cookieAll) {
+//            if(TextUtils.equals(cookieSave.name(),"ptwebqq") || TextUtils.equals(cookieSave.name(),"skey")){
+//                needRemove.add(cookieSave);
+//            }
+//        }
+//        for(Cookie cookie: needRemove){
+//            cookieAll.remove(cookie);
+//        }
+//        okhttp3.Cookie.Builder builder = new Cookie.Builder();
+//        builder.name("ptwebqq");
+//        builder.domain("qq.com");
+//        builder.value("");
+//        okhttp3.Cookie cookie1 = builder.build();
+//
+//        okhttp3.Cookie.Builder builder2 = new Cookie.Builder();
+//        builder2.name("skey");
+//        builder2.domain("qq.com");
+//        builder2.value("");
+//        okhttp3.Cookie cookie2 = builder2.build();
+//        cookieAll.add(cookie1);
+//        cookieAll.add(cookie2);
+//        Request request = get(ApiURL.LOGOUT);
+//        okHttpClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//                if(listener != null){
+//                    listener.fail(-100, "退出失败");
+//                }
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+//                String result = response.body().string();
+//                cookieAll = null;
+//                logE("退出"+result);
+//                if(listener != null){
+//                    listener.success("");
+//                }
+//            }
+//        });
     }
 
     //获取返回json的result字段（JSONObject类型）
@@ -784,6 +837,6 @@ public class QQClient {
     }
 
     public interface MessageCallbackNew extends MessageCallback{
-        void fail();
+        void fail(int code, String msg);
     }
 }

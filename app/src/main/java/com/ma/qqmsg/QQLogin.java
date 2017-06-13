@@ -48,6 +48,7 @@ public class QQLogin extends AppCompatActivity {
                 String url = "mqqwpa://im/chat?chat_type=wpa&uin=1059876295";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
     }
@@ -139,7 +140,7 @@ public class QQLogin extends AppCompatActivity {
                                                 btn_get_ercode.setText("获取QQ二维码");
                                                 txt_status.setText("二维码状态:待请求");
                                                 showTip("登录失败");
-                                                QQClient.getInstance().logout();
+                                                QQClient.getInstance().clear();
                                             }
                                         });
                                     }

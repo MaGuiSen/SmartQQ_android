@@ -1,9 +1,12 @@
 package com.ma.qqmsg;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,6 +56,28 @@ public class MainActivity extends AppCompatActivity {
         }, 0, 1000);
     }
 
+    AlertDialog dialog = null;
+    protected void showAlert() {
+        if(dialog != null && dialog.isShowing()){
+            return;
+        }
+        if(dialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("你需要进入http://w.qq.com 点击[设置]->[退出登录],后重新使用本软件");
+            builder.setTitle("重复登录，无法接收消息！");
+            builder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    startActivity(new Intent(MainActivity.this, OperateChoiceActivity.class));
+                    finish();
+                }
+            });
+            dialog = builder.create();
+        }
+        dialog.show();
+    }
+
     public void pollMessage(){
         if(isDestroy){
             return;
@@ -64,8 +89,16 @@ public class MainActivity extends AppCompatActivity {
         Log.e("msg", "11111111111111111111");
         QQClient.getInstance().pollMessage(new QQClient.MessageCallbackNew() {
             @Override
-            public void fail() {
+            public void fail(int code, String msg) {
                 msgGetting = false;
+                if(code == 103){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAlert();
+                        }
+                    });
+                }
             }
 
             @Override

@@ -68,7 +68,6 @@
 -dontwarn com.squareup.okhttp.**
 -keep class com.squareup.okhttp.** { *;}
 
-
 -keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
@@ -80,11 +79,11 @@
 -keep class com.alibaba.fastjson.** { *; }
 -dontwarn com.alibaba.fastjson.**
 
--keep class com.scienjus.smartqq.** { *; }
--dontwarn com.scienjus.smartqq.**
+-keep class com.scienjus.smartqq.model.** { *; }
+-dontwarn com.scienjus.smartqq.model.**
 
--keep class com.ma.qqmsg.** { *; }
--dontwarn com.ma.qqmsg.**
+-keep class com.ma.qqmsg.model.** { *; }
+-dontwarn com.ma.qqmsg.model.**
 -keep class com.lib.** { *; }
 -dontwarn com.lib.**
 

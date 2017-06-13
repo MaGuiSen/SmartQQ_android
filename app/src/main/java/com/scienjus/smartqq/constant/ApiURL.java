@@ -89,6 +89,10 @@ public enum ApiURL {
     GET_FRIEND_INFO(
             "http://s.web2.qq.com/api/get_friend_info2?tuin={1}&vfwebqq={2}&clientid=53999199&psessionid={3}&t=0.1",
             "http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1"
+    ),
+    LOGOUT(
+            "http://w.qq.com/",
+            "http://w.qq.com/"
     );
 
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36";

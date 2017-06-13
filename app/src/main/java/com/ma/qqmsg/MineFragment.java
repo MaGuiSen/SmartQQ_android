@@ -84,14 +84,17 @@ public class MineFragment extends Fragment {
     public void click(View view){
         if(view.getId() == R.id.txt_logout){
             MyApplication.getInstance().userInfo = null;
-            QQClient.getInstance().logout();
-            startActivity(new Intent(getActivity(), OperateChoiceActivity.class));
-            handler.postDelayed(new Runnable() {
+            QQClient.getInstance().logout(new QQClient.Listener() {
                 @Override
-                public void run() {
-                    getActivity().finish();
+                public void success(Object object) {
                 }
-            }, 300);
+
+                @Override
+                public void fail(int code, String msg) {
+                }
+            });
+            startActivity(new Intent(getActivity(), OperateChoiceActivity.class));
+            getActivity().finish();
         }else if(view.getId() == R.id.lay_group_replay){
             Intent intent = new Intent(getActivity(), ReplyActivity.class);
             intent.putExtra("type", ReplyActivity.Type_All_GROUP);
@@ -111,6 +114,7 @@ public class MineFragment extends Fragment {
             String url = "mqqwpa://im/chat?chat_type=wpa&uin=1059876295";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 
