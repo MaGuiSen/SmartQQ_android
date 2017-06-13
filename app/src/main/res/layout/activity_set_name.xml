@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#ff01aa94">
+
+        <ImageView
+            android:id="@+id/img_bar_left"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/bar_back_btn"/>
+
+        <TextView
+            android:id="@+id/txt_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="关于我们"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#4d4d4d"
+        android:text="设置“群小名”并启用后，当群消息中包含@“小名”，才会进行对应的消息回复"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="备注：\n1、默认情况下会对包含@“你的QQ昵称”的群消息进行回复\n2、此设置不影响好友消息的自动回复"/>
+
+    <EditText
+        android:id="@+id/edit_reply"
+        android:hint="请输入群小名"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="top"
+        android:background="#f2f2f2"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        />
+    <CheckBox
+        android:text="是否启用当前设置"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/enable_now" />
+    <Button
+        android:onClick="save"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="保存"/>
+</LinearLayout>

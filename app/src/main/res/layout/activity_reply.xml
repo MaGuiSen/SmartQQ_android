@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#ff01aa94">
+
+        <ImageView
+            android:id="@+id/img_bar_left"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/bar_back_btn"/>
+
+        <TextView
+            android:id="@+id/txt_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="关于我们"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+    <CheckBox
+        android:text="允许接入智能回复系统,可以在您自定义回复内容的基础上进行更有针对性的回复"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/can_ai" />
+    <EditText
+        android:id="@+id/edit_reply"
+        android:hint="请输入自回复内容"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="top"
+        android:background="#f2f2f2"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        />
+    <CheckBox
+        android:text="是否启用当前设置"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/enable_now" />
+    <TextView
+        android:id="@+id/txt_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:textSize="14sp"
+        />
+    <Button
+        android:onClick="save"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="保存"/>
+</LinearLayout>

@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#ff01aa94">
+
+        <ImageView
+            android:id="@+id/img_bar_left"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            android:src="@drawable/bar_back_btn"/>
+
+        <TextView
+            android:id="@+id/txt_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="关于我们"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

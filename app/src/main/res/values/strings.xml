@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QQ自动回复</string>
+    <string name="title_activity_operate_choice">OperateChoice</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
