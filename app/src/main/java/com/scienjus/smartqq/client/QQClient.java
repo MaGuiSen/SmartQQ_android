@@ -598,7 +598,6 @@ public class QQClient {
 
     public void pollMessage(final MessageCallbackNew callback) {
         logD("开始接收消息");
-
         JSONObject r = new JSONObject();
         r.put("ptwebqq", ptwebqq);
         r.put("clientid", Client_ID);
@@ -610,6 +609,8 @@ public class QQClient {
             public void onFailure(Call call, IOException e) {
                 if(callback != null)
                 callback.fail(-100, "");
+                callback.end();
+                e.printStackTrace();
             }
 
             @Override
@@ -625,18 +626,24 @@ public class QQClient {
                             callback.onGroupMessage(new GroupMessage(message.getJSONObject("value")));
                         } else if ("discu_message".equals(type)) {
                             callback.onDiscussMessage(new DiscussMessage(message.getJSONObject("value")));
+                        }else{
+                            if(callback != null)
+                                callback.fail(-100, "");
                         }
                     }
+                    callback.end();
                 }catch (RequestException e){
                     String msg = e.getMessage();
                     if(!TextUtils.isEmpty(msg) && msg.contains("[103]")){
                         callback.fail(103, msg);
-                        return;
+                    }else{
+                        callback.fail(-100, "");
                     }
-                    callback.fail(-100, "");
+                    callback.end();
                     e.printStackTrace();
                 } catch (Exception e) {
                     callback.fail(-100, "");
+                    callback.end();
                     e.printStackTrace();
                 }
             }
@@ -838,5 +845,6 @@ public class QQClient {
 
     public interface MessageCallbackNew extends MessageCallback{
         void fail(int code, String msg);
+        void end();
     }
 }

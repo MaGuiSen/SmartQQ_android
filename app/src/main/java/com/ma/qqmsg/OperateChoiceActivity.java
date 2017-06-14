@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.lib.util.TuLingUtil;
 
@@ -15,6 +16,24 @@ public class OperateChoiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operate_choice);
+    }
+
+    // 再按一次退出
+    private long firstTime;
+    private long secondTime;
+    private long spaceTime;
+
+    @Override
+    public void onBackPressed() {
+        firstTime = System.currentTimeMillis();
+        spaceTime = firstTime - secondTime;
+        secondTime = firstTime;
+        if (spaceTime > 2000) {
+            Toast.makeText(this, "再点一次退出", Toast.LENGTH_LONG).show();
+        } else {
+            super.onBackPressed();
+            System.exit(0);
+        }
     }
 
     public void qqLogin(View view){

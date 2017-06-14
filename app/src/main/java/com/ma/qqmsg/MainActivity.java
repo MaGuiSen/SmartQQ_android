@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 pollMessage();
             }
-        }, 0, 1000);
+        }, 0, 500);
     }
 
     AlertDialog dialog = null;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(dialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("你需要进入http://w.qq.com 点击[设置]->[退出登录],后重新使用本软件");
+            builder.setMessage("你需要使用电脑浏览器访问http://w.qq.com 点击[设置]->[退出登录],后重新使用本软件");
             builder.setTitle("重复登录，无法接收消息！");
             builder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
                 @Override
@@ -87,11 +87,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         msgGetting = true;
-        Log.e("msg", "11111111111111111111");
         QQClient.getInstance().pollMessage(new QQClient.MessageCallbackNew() {
             @Override
             public void fail(int code, String msg) {
-                msgGetting = false;
                 if(code == 103){
                     runOnUiThread(new Runnable() {
                         @Override
@@ -100,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+
+            @Override
+            public void end() {
+                msgGetting = false;
+                Log.e("smartQQ", "end");
             }
 
             @Override
@@ -157,20 +161,20 @@ public class MainActivity extends AppCompatActivity {
                 if(!say.contains("@"+userInfo.getNick())){
                     if(isEnableSmallName){
                         if(!say.contains("@"+smallName)){
-                            msgGetting = false;
+//                            msgGetting = false;
                             return;
                         }else{
                             say = say.replaceAll("@"+smallName, "");
                         }
                     }else{
-                        msgGetting = false;
+//                        msgGetting = false;
                         return;
                     }
                 }else{
                     say = say.replaceAll("@"+userInfo.getNick(), "");
                 }
             }else{
-                msgGetting = false;
+//                msgGetting = false;
                 return;
             }
         }
@@ -221,17 +225,17 @@ public class MainActivity extends AppCompatActivity {
                                             if(is_enable && !TextUtils.isEmpty(msg)) {
                                                 sendMessage(userId, type, msg);
                                             }else{
-                                                msgGetting = false;
+//                                                msgGetting = false;
                                             }
                                         }
                                     });
                                 }else if(is_enable && !TextUtils.isEmpty(msg)) {
                                     sendMessage(userId, type, msg);
                                 }else{
-                                    msgGetting = false;
+//                                    msgGetting = false;
                                 }
                             }else{
-                                msgGetting = false;
+//                                msgGetting = false;
                             }
                     }
                 }});
@@ -264,17 +268,17 @@ public class MainActivity extends AppCompatActivity {
                                 if(is_enable && !TextUtils.isEmpty(msg)) {
                                     sendMessage(userId, type, msg);
                                 }else{
-                                    msgGetting = false;
+//                                    msgGetting = false;
                                 }
                             }
                         });
                     }else if(is_enable && !TextUtils.isEmpty(msg)) {
                         sendMessage(userId, type, msg);
                     }else{
-                        msgGetting = false;
+//                        msgGetting = false;
                     }
                 }else{
-                    msgGetting = false;
+//                    msgGetting = false;
                 }
             }
         }else{
@@ -304,17 +308,17 @@ public class MainActivity extends AppCompatActivity {
                             if(is_enable && !TextUtils.isEmpty(msg)) {
                                 sendMessage(userId, type, msg);
                             }else{
-                                msgGetting = false;
+//                                msgGetting = false;
                             }
                         }
                     });
                 }else if(is_enable && !TextUtils.isEmpty(msg)) {
                     sendMessage(userId, type, msg);
                 }else{
-                    msgGetting = false;
+//                    msgGetting = false;
                 }
             }else{
-                msgGetting = false;
+//                msgGetting = false;
             }
         }
     }
@@ -328,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
         }else if(type == 3){
             QQClient.getInstance().sendMessageToDiscuss(id , msg);
         }
-        msgGetting = false;
+//        msgGetting = false;
     }
 
     private void initBottomTab() {
