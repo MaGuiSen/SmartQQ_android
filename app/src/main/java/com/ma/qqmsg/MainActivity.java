@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -124,33 +125,56 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // 再按一次退出
+    private long firstTime;
+    private long secondTime;
+    private long spaceTime;
+
+    @Override
+    public void onBackPressed() {
+        firstTime = System.currentTimeMillis();
+        spaceTime = firstTime - secondTime;
+        secondTime = firstTime;
+        if (spaceTime > 2000) {
+            Toast.makeText(this, "再点一次退出", Toast.LENGTH_LONG).show();
+        } else {
+            super.onBackPressed();
+            System.exit(0);
+        }
+    }
+
     boolean is_enable_ai = false,is_enable = false;
     String msg = "";
     long toId = 0;
     Replay replay = null;
 
-    private void receiveMessage(final String content,final long userId,final int type) {
+    private void receiveMessage(String say,final long userId,final int type) {
         if(type == 2 || type == 3){
             UserInfo userInfo = MyApplication.getInstance().userInfo;
             String smallName = PreferenceUtils.getInstance().getStringParam(userInfo.getUin()+"smallName", "");
             boolean isEnableSmallName = PreferenceUtils.getInstance().getBooleanParam(userInfo.getUin()+"isEnableSmallName", false);
             if(userInfo != null){
-                if(!content.contains("@"+userInfo.getNick())){
+                if(!say.contains("@"+userInfo.getNick())){
                     if(isEnableSmallName){
-                        if(!content.contains("@"+smallName)){
+                        if(!say.contains("@"+smallName)){
                             msgGetting = false;
                             return;
+                        }else{
+                            say = say.replaceAll("@"+smallName, "");
                         }
                     }else{
                         msgGetting = false;
                         return;
                     }
+                }else{
+                    say = say.replaceAll("@"+userInfo.getNick(), "");
                 }
             }else{
                 msgGetting = false;
                 return;
             }
         }
+        final String content = say;
         toId = userId;
         //先判断单独的是否有设置，如果没有在调用全局的
         replay = ReplayDao.getReplayByToId(toId +"", null);
