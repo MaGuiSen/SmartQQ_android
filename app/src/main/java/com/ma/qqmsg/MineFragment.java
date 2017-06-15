@@ -55,26 +55,11 @@ public class MineFragment extends Fragment {
     }
 
     private void loadAccount() {
-        QQClient.getInstance().getAccount(new QQClient.Listener() {
-            @Override
-            public void success(Object object) {
-                final UserInfo userInfo = (UserInfo)object;
-                if(userInfo != null){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            txt_account.setText(userInfo.getAccount());
-                            txt_name.setText(userInfo.getNick());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void fail(int code, String msg) {
-
-            }
-        });
+        UserInfo userInfo = MyApplication.getInstance().userInfo;
+        if(userInfo != null) {
+            txt_account.setText(userInfo.getAccount());
+            txt_name.setText(userInfo.getNick());
+        }
     }
 
     private void initView() {

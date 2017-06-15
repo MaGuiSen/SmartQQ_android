@@ -32,11 +32,6 @@ public class QQLogin extends AppCompatActivity {
 
     boolean requesting = false;
 
-    // 再按一次退出
-    private long firstTime;
-    private long secondTime;
-    private long spaceTime;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +52,6 @@ public class QQLogin extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        firstTime = System.currentTimeMillis();
-        spaceTime = firstTime - secondTime;
-        secondTime = firstTime;
-        if (spaceTime > 2000) {
-            Toast.makeText(this, "再点一次退出", Toast.LENGTH_LONG).show();
-        } else {
-            super.onBackPressed();
-            System.exit(0);
-        }
     }
 
     public void getErCode(View view){
@@ -123,10 +105,10 @@ public class QQLogin extends AppCompatActivity {
                                                     txt_status.setText("二维码状态:待请求");
                                                     requesting = false;
                                                     showTip("登录成功");
-                                                    startActivity(new Intent(QQLogin.this, MainActivity.class));
-                                                    QQLogin.this.finish();
                                                 }
                                             });
+                                            startActivity(new Intent(QQLogin.this, MainActivity.class));
+                                            QQLogin.this.finish();
                                         }
                                     }
 

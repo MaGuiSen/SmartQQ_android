@@ -5,12 +5,26 @@
     android:clipToPadding="false"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
     <FrameLayout
         android:id="@+id/frm_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"></FrameLayout>
+        android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/txt_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#e3ff0000"
+            android:background="#eeeeee"
+            android:text="警告"
+            android:padding="5dp"
+            android:gravity="center"
+            />
+    </RelativeLayout>
 
     <com.ashokvarma.bottomnavigation.BottomNavigationBar
         android:id="@+id/bottom_navigation_bar"

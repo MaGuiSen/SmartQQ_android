@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -18,15 +20,12 @@ import com.lib.db.dao.ReplayDao;
 import com.lib.util.PreferenceUtils;
 import com.lib.util.TuLingUtil;
 import com.ma.qqmsg.model.Replay;
-import com.scienjus.smartqq.callback.MessageCallback;
 import com.scienjus.smartqq.client.QQClient;
 import com.scienjus.smartqq.model.DiscussMessage;
 import com.scienjus.smartqq.model.GroupMessage;
 import com.scienjus.smartqq.model.Message;
 import com.scienjus.smartqq.model.UserInfo;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.bottom_navigation_bar)
     BottomNavigationBar bottomNavigationBar;
+    @Bind(R.id.txt_tip)
+    TextView txt_tip;
+
+
     Handler handler = new Handler();
     boolean isDestroy = false;
     boolean msgGetting = false;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        txt_tip.setVisibility(View.GONE);
         initFragment();
         initBottomTab();
         timer = new Timer();
@@ -57,26 +61,9 @@ public class MainActivity extends AppCompatActivity {
         }, 0, 500);
     }
 
-    AlertDialog dialog = null;
-    protected void showAlert() {
-        if(dialog != null && dialog.isShowing()){
-            return;
-        }
-        if(dialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("你需要使用电脑浏览器访问http://w.qq.com 点击[设置]->[退出登录],后重新使用本软件");
-            builder.setTitle("重复登录，无法接收消息！");
-            builder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    startActivity(new Intent(MainActivity.this, OperateChoiceActivity.class));
-                    finish();
-                }
-            });
-            dialog = builder.create();
-        }
-        dialog.show();
+    protected void showAlert(boolean isShow, String tip) {
+        txt_tip.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        txt_tip.setText(tip);
     }
 
     public void pollMessage(){
@@ -89,15 +76,13 @@ public class MainActivity extends AppCompatActivity {
         msgGetting = true;
         QQClient.getInstance().pollMessage(new QQClient.MessageCallbackNew() {
             @Override
-            public void fail(int code, String msg) {
-                if(code == 103){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showAlert();
-                        }
-                    });
-                }
+            public void fail(final int code, String msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAlert(code == 103, "提示：你需要使用电脑浏览器访问http://w.qq.com 点击[设置]->[退出登录],后重新使用本软件");
+                    }
+                });
             }
 
             @Override

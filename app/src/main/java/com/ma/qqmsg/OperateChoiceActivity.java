@@ -38,12 +38,6 @@ public class OperateChoiceActivity extends AppCompatActivity {
 
     public void qqLogin(View view){
         startActivity(new Intent(this, QQLogin.class));
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                OperateChoiceActivity.this.finish();
-            }
-        }, 300);
     }
 
     public void otherLogin(View view){
